@@ -1,42 +1,57 @@
 ---
 title: Introduction
-description: This section provides an overview of Introduction.
+description: This section provides an overview of LogosQ Library.
 ---
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam iste dolorum tempore consectetur explicabo tempora provident quia maxime, molestiae, facilis aperiam et, error illum vel ullam? Quis architecto dolore ullam
+This project is a quantum computing library developed in Rust, inspired by existing libraries such as [QPP](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0208073) in C++, [Yao.jl](https://yaoquantum.org/) in Julia, and [Pennylane](https://pennylane.ai/) in Python. The library aims to provide a comprehensive set of tools for quantum computing, including quantum gates, circuits, states, algorithms, and noise simulation.
+
+λόγος (lógos) comes from Greek means the logic.
 
 ## Getting Started
 
-To begin using the Documentation Template, follow these simple steps:
+Before knowing more details of the library, it is necessary to understand some basic knowledge. The book written by Michael A. Nielsen and Issac Chuang is definitely a great reference. However, even if you don't know what quantum computing could do, the fruitful example in this book could help you master the basics of quantum computing, even some quantum machine learning algorithms.
 
-- Start by cloning the repository to your local machine.
+Here is the famous quote that hopefully trigger your interests in physics:
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit quae iure nulla deserunt dolore quam pariatur minus sapiente accusantium. Optio, necessitatibus sequi. Veritatis, aspernatur? Possimus quis repellat eum vitae eveniet.
+> "Ludwig Boltzmann, who spent much of his life studying statistical mechanics, died in 1906, by his own hand. Paul Ehrenfest, carrying on the work, died similarly in 1933. Now it is our turn to study statistical mechanics." - David L. Goodstein (States of Matter (Dover Books on Physics))
 
-## Blockquotes
+Every second you spent on working in this library worth part of your life, and I sincerely appreciate your interests, let's start the journey!
 
-Blockquotes are useful for emphasizing key points or quoting external sources:
+## Welcome to LogosQ
 
-> "Documentation is a love letter that you write to your future self." - Damian Conway
-
-Feel free to use blockquotes to highlight important information or quotes relevant to your documentation.
-
-## Code block
-
-```jsx {7} showLineNumbers
-import ThemeProvider from "./theme-provider";
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body className="container">
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
-    </html>
-  );
+```rust {7} showLineNumbers
+pub mod welcome {
+    pub fn greet() {
+        println!("Welcome to LogosQ!");
+        println!("Start cooking amazing quantum breakfast today!");
+    }
 }
 ```
+<div style={{
+  fontFamily: "monospace", 
+  whiteSpace: "pre", 
+  textAlign: "center",
+  color: "var(--primary)",
+  margin: "2rem 0"
+}}>
+{`
+                        LogosQ
 
-## Conclusion
+                        (@)  ()
+                       (@@@)
+                   (    )
+                (@@@@)
 
-Thank you for choosing the Documentation Template for your project. Whether you're documenting software, APIs, or processes, we're here to support you in creating clear and effective documentation. Happy documenting!
+              (   )
+          ====        ________                ___________
+      _D _|  |_______/        \\__I_I_____===__|_________|
+       |(_)---  |   H\\________/ |   |        =|___ ___|      _________________
+       /     |  |   H  |  |     |   |         ||_| |_||     _|                \\_____A
+      |      |  |   H  |__--------------------| [___] |   =|                        |
+      | ________|___H__/__|_____/[][]~\\_______|       |   -|                        |
+      |/ |   |-----------I_____I [][] []  D   |=======|____|________________________|_
+    __/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__|__________________________|_
+     |/-=|___||    ||    ||    ||    |_____/~\\___/          |_D__D__D_|  |_D__D__D_|
+      \\_/      \\O=====O=====O=====O_/      \\_/               \\_/   \\_/    \\_/   \\_/
+`}
+</div>
