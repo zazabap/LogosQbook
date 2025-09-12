@@ -34,7 +34,15 @@ export const ROUTES: EachRoute[] = [
       { title: "getToken", href: "/getToken" },
     ],
   },
-];
+  {
+    title: "Modules",
+    href: "/modules",
+    noLink: true,
+    items: [
+      { title: "quantumState", href: "/quantumState" },
+    ],
+  },
+]
 
 type Page = { title: string; href: string };
 

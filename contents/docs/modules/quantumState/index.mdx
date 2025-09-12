@@ -1,0 +1,272 @@
+---
+title: quantumState
+description: This section introduces the quantum state module
+---
+
+# Quantum State Module Documentation
+
+This module provides a representation of quantum states and operations for quantum computing simulations. It implements the fundamental building blocks for creating, manipulating, and measuring quantum states.
+
+## Table of Contents
+
+- Overview
+- State Structure
+- Creating Quantum States
+- State Operations
+- Measurement
+- Utility Methods
+- Examples
+
+## Overview
+
+The `states` module provides a quantum state vector representation using complex amplitudes. It supports operations such as:
+
+- Creating various standard quantum states
+- Normalizing state vectors
+- Applying quantum gates
+- Performing measurements
+- Calculating probabilities
+- Tensor products for multi-qubit systems
+
+## State Structure
+
+```rust
+pub struct State {
+    pub vector: Array1<Complex64>,
+    pub num_qubits: usize,
+}
+```
+
+**Fields:**
+- `vector`: An array of complex amplitudes representing the quantum state in the computational basis
+- `num_qubits`: The number of qubits in the system
+
+## Creating Quantum States
+
+### Creating a Custom State
+
+```rust
+pub fn new(vector: Array1<Complex64>, num_qubits: Option<usize>) -> Self
+```
+
+Creates a new quantum state from a complex vector and automatically normalizes it.
+
+**Parameters:**
+- `vector`: The complex amplitudes
+- `num_qubits`: Optional number of qubits. If not provided, calculated as log2 of the vector length
+
+**Example:**
+```rust
+let vector = Array1::from_vec(vec![
+    Complex64::new(1.0, 0.0),
+    Complex64::new(1.0, 0.0),
+]);
+let state = State::new(vector, Some(1));
+```
+
+### Standard Basis States
+
+```rust
+pub fn zero_state(num_qubits: usize) -> Self
+```
+
+Creates the |0...0⟩ state with the specified number of qubits.
+
+```rust
+pub fn one_state(num_qubits: usize) -> Self
+```
+
+Creates the |1...1⟩ state with the specified number of qubits.
+
+**Example:**
+```rust
+let zero = State::zero_state(2); // |00⟩
+let one = State::one_state(2);   // |11⟩
+```
+
+### Superposition States
+
+```rust
+pub fn plus_state(num_qubits: usize) -> Self
+```
+
+Creates the |+⟩ state (equal superposition of all basis states).
+
+```rust
+pub fn bell_state() -> Self
+```
+
+Creates the Bell state (|00⟩ + |11⟩)/√2, a maximally entangled two-qubit state.
+
+**Example:**
+```rust
+let plus = State::plus_state(1);  // (|0⟩ + |1⟩)/√2
+let bell = State::bell_state();   // (|00⟩ + |11⟩)/√2
+```
+
+## State Operations
+
+### Normalization
+
+```rust
+pub fn normalize(&mut self)
+```
+
+Normalizes the state vector so that the sum of squared amplitudes equals 1.
+
+### Applying Gates
+
+```rust
+pub fn apply_gate<G: Gate>(&mut self, gate: &G)
+```
+
+Applies a quantum gate to the state.
+
+**Parameters:**
+- `gate`: The quantum gate to apply
+
+**Example:**
+```rust
+let mut state = State::zero_state(1);
+let h_gate = HadamardGate::new(0);
+state.apply_gate(&h_gate); // Transforms |0⟩ to |+⟩
+```
+
+### Tensor Product
+
+```rust
+pub fn tensor_product(&self, other: &State) -> State
+```
+
+Computes the tensor product of two quantum states.
+
+**Parameters:**
+- `other`: The state to compute the tensor product with
+
+**Returns:**
+- A new state representing the tensor product
+
+**Example:**
+```rust
+let state1 = State::zero_state(1); // |0⟩
+let state2 = State::one_state(1);  // |1⟩
+let combined = state1.tensor_product(&state2); // |01⟩
+```
+
+## Measurement
+
+### Full State Measurement
+
+```rust
+pub fn measure(&self) -> usize
+```
+
+Measures the entire state, returning the observed basis state index according to the probability distribution.
+
+**Returns:**
+- The index of the measured basis state
+
+### Single Qubit Measurement
+
+```rust
+pub fn measure_qubit(&mut self, qubit_idx: usize) -> usize
+```
+
+Measures a specific qubit, collapsing the state according to the measurement outcome.
+
+**Parameters:**
+- `qubit_idx`: The index of the qubit to measure
+
+**Returns:**
+- The measurement result (0 or 1)
+
+**Example:**
+```rust
+let mut bell = State::bell_state(); // (|00⟩ + |11⟩)/√2
+let result = bell.measure_qubit(0); // Measures first qubit, collapses state
+```
+
+### Probability Calculation
+
+```rust
+pub fn probability(&self, basis_state: usize) -> f64
+```
+
+Calculates the probability of measuring a particular basis state.
+
+**Parameters:**
+- `basis_state`: The index of the basis state
+
+**Returns:**
+- The probability of measuring the specified basis state
+
+**Example:**
+```rust
+let plus = State::plus_state(1);
+let prob_zero = plus.probability(0); // 0.5
+```
+
+## Utility Methods
+
+### Print Function
+
+```rust
+pub fn print(&self) -> String
+```
+
+Generates a human-readable representation of the quantum state.
+
+**Returns:**
+- A formatted string representation of the state
+
+**Example:**
+```rust
+let bell = State::bell_state();
+println!("{}", bell.print());
+// Output:
+// State: 2 qubits
+// |00⟩ : 0.7071+0.0000i (p=0.5000)
+// |11⟩ : 0.7071+0.0000i (p=0.5000)
+```
+
+## Examples
+
+### Creating a Bell State and Measuring
+
+```rust
+// Create a Bell state
+let mut bell = State::bell_state();
+println!("Bell state:");
+println!("{}", bell.print());
+
+// Measure the first qubit
+let result = bell.measure_qubit(0);
+println!("Measured qubit 0: {}", result);
+println!("State after measurement:");
+println!("{}", bell.print());
+```
+
+### Creating a Custom Superposition
+
+```rust
+// Create a custom state |ψ⟩ = (0.6|0⟩ + 0.8|1⟩)
+let vector = Array1::from_vec(vec![
+    Complex64::new(0.6, 0.0),
+    Complex64::new(0.8, 0.0),
+]);
+let state = State::new(vector, Some(1));
+println!("Custom state:");
+println!("{}", state.print());
+```
+
+### Working with Multi-Qubit Systems
+
+```rust
+// Create a 3-qubit GHZ state (|000⟩ + |111⟩)/√2
+let mut vector = Array1::zeros(8);
+vector[0] = Complex64::new(1.0/SQRT_2, 0.0);
+vector[7] = Complex64::new(1.0/SQRT_2, 0.0);
+let ghz = State::new(vector, Some(3));
+println!("GHZ state:");
+println!("{}", ghz.print());
+```
