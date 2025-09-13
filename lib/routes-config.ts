@@ -26,20 +26,12 @@ export const ROUTES: EachRoute[] = [
     ],
   },
   {
-    title: "Server Actions",
-    href: "/server-actions",
-    noLink: true,
-    items: [
-      { title: "getSession", href: "/getSession" },
-      { title: "getToken", href: "/getToken" },
-    ],
-  },
-  {
     title: "Modules",
     href: "/modules",
     noLink: true,
     items: [
       { title: "quantumState", href: "/quantumState" },
+      { title: "quantumGate", href: "/quantumGate" },
     ],
   },
 ]

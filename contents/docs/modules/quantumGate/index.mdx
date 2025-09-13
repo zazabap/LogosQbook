@@ -1,0 +1,349 @@
+---
+title: quantumGate
+description: The gates module provides implementations of quantum gates for quantum computing simulations. It contains representations of standard single-qubit and multi-qubit gates as matrices, along with functionality to apply these gates to quantum states.
+---
+
+## Table of Contents
+
+- Overview
+- Gate Trait
+- MatrixGate Implementation
+- Single-Qubit Gates
+  - Pauli Gates
+  - Hadamard Gate
+  - Phase Gates
+  - Rotation Gates
+- Multi-Qubit Gates
+  - CNOT Gate
+  - SWAP Gate
+  - Controlled-Z Gate
+  - Toffoli Gate
+- Usage Examples
+
+## Overview
+
+Quantum gates are the building blocks of quantum circuits, analogous to classical logic gates in conventional digital circuits. This module implements various quantum gates as unitary matrices that can be applied to quantum states.
+
+## Gate Trait
+
+```rust
+pub trait Gate {
+    fn apply(&self, state: &mut State);
+}
+```
+
+The `Gate` trait defines the interface for all quantum gates. Any type implementing this trait must provide an `apply` method that modifies a quantum state according to the gate operation.
+
+## MatrixGate Implementation
+
+```rust
+#[derive(Clone)]
+pub struct MatrixGate {
+    pub matrix: Array2<Complex64>,
+}
+```
+
+The `MatrixGate` struct represents any quantum gate as a matrix of complex numbers. It implements the `Gate` trait by applying the matrix to the state vector.
+
+**Implementation:**
+```rust
+impl Gate for MatrixGate {
+    fn apply(&self, state: &mut State) {
+        // Check matrix dimensions
+        assert_eq!(
+            self.matrix.shape()[1],
+            state.vector.len(),
+            "Matrix columns must match state dimension"
+        );
+
+        state.vector = self.matrix.dot(&state.vector);
+        state.normalize();
+    }
+}
+```
+
+## Single-Qubit Gates
+
+### Pauli Gates
+
+The Pauli gates are a set of three 2×2 complex matrices that are important in quantum computing.
+
+#### Pauli-X Gate
+
+```rust
+pub fn x_gate() -> MatrixGate
+```
+
+The Pauli-X gate acts as a quantum NOT gate, flipping the state of a qubit.
+
+**Matrix Representation:**
+```
+[0 1]
+[1 0]
+```
+
+#### Pauli-Y Gate
+
+```rust
+pub fn y_gate() -> MatrixGate
+```
+
+The Pauli-Y gate rotates the qubit state around the Y-axis of the Bloch sphere.
+
+**Matrix Representation:**
+```
+[0  -i]
+[i   0]
+```
+
+#### Pauli-Z Gate
+
+```rust
+pub fn z_gate() -> MatrixGate
+```
+
+The Pauli-Z gate flips the phase of the qubit if it's in the |1⟩ state.
+
+**Matrix Representation:**
+```
+[1  0]
+[0 -1]
+```
+
+### Hadamard Gate
+
+```rust
+pub fn h_gate() -> MatrixGate
+```
+
+The Hadamard gate creates a superposition state by transforming basis states |0⟩ and |1⟩ into |+⟩ and |-⟩ respectively.
+
+**Matrix Representation:**
+```
+[1/√2  1/√2]
+[1/√2 -1/√2]
+```
+
+### Phase Gates
+
+#### S Gate (Phase Gate)
+
+```rust
+pub fn s_gate() -> MatrixGate
+```
+
+The S gate is a 90-degree phase rotation gate.
+
+**Matrix Representation:**
+```
+[1 0]
+[0 i]
+```
+
+#### T Gate (π/8 Gate)
+
+```rust
+pub fn t_gate() -> MatrixGate
+```
+
+The T gate is a 45-degree phase rotation gate.
+
+**Matrix Representation:**
+```
+[1      0    ]
+[0  1/√2+i/√2]
+```
+
+### Rotation Gates
+
+#### Rotation-X Gate
+
+```rust
+pub fn rx_gate(theta: f64) -> MatrixGate
+```
+
+Rotation around the X-axis of the Bloch sphere by angle θ.
+
+**Parameters:**
+- `theta`: Rotation angle in radians
+
+**Matrix Representation:**
+```
+[cos(θ/2)  -i·sin(θ/2)]
+[-i·sin(θ/2)  cos(θ/2)]
+```
+
+#### Rotation-Y Gate
+
+```rust
+pub fn ry_gate(theta: f64) -> MatrixGate
+```
+
+Rotation around the Y-axis of the Bloch sphere by angle θ.
+
+**Parameters:**
+- `theta`: Rotation angle in radians
+
+**Matrix Representation:**
+```
+[cos(θ/2)  -sin(θ/2)]
+[sin(θ/2)   cos(θ/2)]
+```
+
+#### Rotation-Z Gate
+
+```rust
+pub fn rz_gate(theta: f64) -> MatrixGate
+```
+
+Rotation around the Z-axis of the Bloch sphere by angle θ.
+
+**Parameters:**
+- `theta`: Rotation angle in radians
+
+**Matrix Representation:**
+```
+[e^(-iθ/2)     0    ]
+[    0      e^(iθ/2)]
+```
+
+## Multi-Qubit Gates
+
+### CNOT Gate
+
+```rust
+pub fn cnot_gate() -> MatrixGate
+```
+
+The CNOT (Controlled-NOT) gate flips the target qubit if the control qubit is |1⟩.
+
+**Matrix Representation:**
+```
+[1 0 0 0]
+[0 1 0 0]
+[0 0 0 1]
+[0 0 1 0]
+```
+
+### SWAP Gate
+
+```rust
+pub fn swap_gate() -> MatrixGate
+```
+
+The SWAP gate exchanges the states of two qubits.
+
+**Matrix Representation:**
+```
+[1 0 0 0]
+[0 0 1 0]
+[0 1 0 0]
+[0 0 0 1]
+```
+
+### Controlled-Z Gate
+
+```rust
+pub fn cz_gate() -> MatrixGate
+```
+
+The Controlled-Z gate applies a phase flip on the target qubit if both qubits are in the |1⟩ state.
+
+**Matrix Representation:**
+```
+[1 0 0  0]
+[0 1 0  0]
+[0 0 1  0]
+[0 0 0 -1]
+```
+
+### Toffoli Gate
+
+```rust
+pub fn toffoli_gate() -> MatrixGate
+```
+
+The Toffoli (CCNOT) gate is a 3-qubit gate that performs a NOT operation on the third qubit if the first two qubits are both in state |1⟩.
+
+**Matrix Representation:**
+```
+[1 0 0 0 0 0 0 0]
+[0 1 0 0 0 0 0 0]
+[0 0 1 0 0 0 0 0]
+[0 0 0 1 0 0 0 0]
+[0 0 0 0 1 0 0 0]
+[0 0 0 0 0 1 0 0]
+[0 0 0 0 0 0 0 1]
+[0 0 0 0 0 0 1 0]
+```
+
+## Usage Examples
+
+### Applying a Single-Qubit Gate
+
+```rust
+use logosq::gates::{Gate, h_gate};
+use logosq::states::State;
+
+// Create a |0⟩ state
+let mut state = State::zero_state(1);
+
+// Apply Hadamard gate to create |+⟩ state
+let h = h_gate();
+h.apply(&mut state);
+
+// Print the state
+println!("{}", state.print());
+// Output:
+// State: 1 qubit
+// |0⟩ : 0.7071+0.0000i (p=0.5000)
+// |1⟩ : 0.7071+0.0000i (p=0.5000)
+```
+
+### Creating a Bell State
+
+```rust
+use logosq::gates::{Gate, h_gate, cnot_gate};
+use logosq::states::State;
+
+// Create a |00⟩ state
+let mut state = State::zero_state(2);
+
+// Apply Hadamard gate to the first qubit
+let h = h_gate();
+// Need to extend h to act on first qubit in 2-qubit system
+// (implementation details depend on your circuit model)
+
+// Apply CNOT gate
+let cnot = cnot_gate();
+cnot.apply(&mut state);
+
+// Print the state
+println!("{}", state.print());
+// Expected Output:
+// State: 2 qubits
+// |00⟩ : 0.7071+0.0000i (p=0.5000)
+// |11⟩ : 0.7071+0.0000i (p=0.5000)
+```
+
+### Applying a Rotation Gate
+
+```rust
+use logosq::gates::{Gate, ry_gate};
+use logosq::states::State;
+use std::f64::consts::PI;
+
+// Create a |0⟩ state
+let mut state = State::zero_state(1);
+
+// Apply a π/4 rotation around Y-axis
+let ry = ry_gate(PI/4.0);
+ry.apply(&mut state);
+
+// Print the state
+println!("{}", state.print());
+// Output:
+// State: 1 qubit
+// |0⟩ : 0.9239+0.0000i (p=0.8536)
+// |1⟩ : 0.3827+0.0000i (p=0.1464)
+```
