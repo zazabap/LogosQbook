@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Space_Mono, Space_Grotesk } from "next/font/google";
 import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const regularFont = Space_Grotesk({
   subsets: ["latin"],
@@ -46,6 +47,7 @@ export default function RootLayout({
             {children}
           </main>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
