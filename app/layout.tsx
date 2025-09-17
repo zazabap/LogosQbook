@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Space_Mono, Space_Grotesk } from "next/font/google";
 import "@/styles/globals.css";
+import "katex/dist/katex.min.css"; // Add this line
 import { Analytics } from "@vercel/analytics/next";
 
 const regularFont = Space_Grotesk({

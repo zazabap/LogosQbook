@@ -6,6 +6,7 @@ import rehypePrism from "rehype-prism-plus";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import rehypeCodeTitles from "rehype-code-titles";
+import { BlockMath, InlineMath } from 'react-katex'; // Add this import
 
 // custom components imports
 import Note from "@/components/note";
@@ -13,6 +14,8 @@ import Note from "@/components/note";
 // add custom components
 const components = {
   Note,
+  BlockMath, // Add BlockMath component
+  InlineMath, // Add InlineMath component
 };
 
 // can be used for other pages like blogs, Guides etc

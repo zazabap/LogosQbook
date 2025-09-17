@@ -34,6 +34,15 @@ export const ROUTES: EachRoute[] = [
       { title: "quantumGate", href: "/quantumGate" },
     ],
   },
+  {
+    title: "Tutorial",
+    href: "/tutorial",
+    noLink: true,
+    items: [
+      { title: "quantumState", href: "/quantumState" },
+      { title: "quantumGate", href: "/quantumGate" },
+    ],
+  },
 ]
 
 type Page = { title: string; href: string };
