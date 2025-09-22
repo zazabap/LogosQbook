@@ -41,6 +41,7 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "quantumState", href: "/quantumState" },
       { title: "quantumGate", href: "/quantumGate" },
+      { title: "QFT", href: "/QFT" },
     ],
   },
 ]

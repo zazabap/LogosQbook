@@ -1,0 +1,27 @@
+---
+title: QFT
+description: This section provides an overview of the Quantum Fourier Transform (QFT) in the LogosQ Library.
+---
+
+# Quantum Fourier Transform (QFT)
+
+## Mathematical Definition
+
+The Quantum Fourier Transform is defined as the following unitary transformation on the computational basis states:
+
+<BlockMath math="|j\rangle \mapsto \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} e^{2\pi ijk/N} |k\rangle" />
+
+Where:
+- N = 2^n for an n-qubit system
+- j and k are integers from 0 to N-1
+- <InlineMath math="e^{2\pi ijk/N}" /> represents the complex phase factor
+
+For a general quantum state <InlineMath math="|\psi\rangle = \sum_{j=0}^{N-1} \alpha_j |j\rangle" />, the QFT produces:
+
+<BlockMath math="QFT|\psi\rangle = \sum_{j=0}^{N-1} \alpha_j \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} e^{2\pi ijk/N} |k\rangle" />
+
+This can be rewritten as:
+
+<BlockMath math="QFT|\psi\rangle = \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} \left(\sum_{j=0}^{N-1} \alpha_j e^{2\pi ijk/N}\right) |k\rangle" />
+
+The QFT is the quantum analog of the discrete Fourier transform, performing a basis transformation from the computational basis to the Fourier basis.
