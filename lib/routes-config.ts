@@ -30,8 +30,9 @@ export const ROUTES: EachRoute[] = [
     href: "/modules",
     noLink: true,
     items: [
-      { title: "quantumState", href: "/quantumState" },
-      { title: "quantumGate", href: "/quantumGate" },
+      { title: "State", href: "/State" },
+      { title: "Gate", href: "/Gate" },
+      { title: "Circuit", href: "/Circuit" },
     ],
   },
   {
@@ -39,8 +40,8 @@ export const ROUTES: EachRoute[] = [
     href: "/tutorial",
     noLink: true,
     items: [
-      { title: "quantumState", href: "/quantumState" },
-      { title: "quantumGate", href: "/quantumGate" },
+      { title: "State", href: "/State" },
+      { title: "Gate", href: "/Gate" },
       { title: "QFT", href: "/QFT" },
     ],
   },

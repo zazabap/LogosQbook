@@ -1,0 +1,354 @@
+---
+title: Circuit
+description: This module provides a representation of quantum circuits and operations for quantum computing simulations. It implements the fundamental building blocks for creating, manipulating, and measuring quantum circuits.
+---
+
+
+# Circuit Module Documentation
+
+## Overview
+
+The Circuit module provides the core functionality for building and executing quantum circuits in LogosQ. It allows you to construct quantum circuits by adding gates sequentially, execute them on quantum states, and perform various circuit manipulations.
+
+## Core Components
+
+### Circuit Structure
+
+```rust
+pub struct Circuit {
+    pub operations: Vec<Operation>,
+    pub num_qubits: usize,
+    pub name: Option<String>,
+    pub noise_models: Vec<Rc<dyn NoiseModel>>,
+}
+```
+
+### Operation Structure
+
+```rust
+pub struct Operation {
+    pub gate: Rc<dyn Gate>,
+    pub qubits: Vec<usize>,
+    pub name: String,
+}
+```
+
+## Basic Usage
+
+### Creating a Circuit
+
+```rust
+use logosq::circuits::Circuit;
+use logosq::states::State;
+
+// Create a 3-qubit circuit
+let mut circuit = Circuit::new(3);
+
+// Create a named circuit
+let mut named_circuit = Circuit::new(2).with_name("Bell State Circuit");
+```
+
+### Adding Gates
+
+#### Single-Qubit Gates
+
+```rust
+// Add Pauli gates
+circuit.x(0);  // Pauli-X on qubit 0
+circuit.y(1);  // Pauli-Y on qubit 1
+circuit.z(2);  // Pauli-Z on qubit 2
+
+// Add Hadamard gate
+circuit.h(0);  // Hadamard on qubit 0
+
+// Add phase gates
+circuit.s(1);  // S gate on qubit 1
+circuit.t(2);  // T gate on qubit 2
+
+// Add rotation gates
+circuit.rx(0, std::f64::consts::PI / 4.0);  // RX rotation
+circuit.ry(1, std::f64::consts::PI / 2.0);  // RY rotation
+circuit.rz(2, std::f64::consts::PI / 3.0);  // RZ rotation
+```
+
+#### Two-Qubit Gates
+
+```rust
+// CNOT gate
+circuit.cnot(0, 1);  // Control: qubit 0, Target: qubit 1
+
+// Controlled-Z gate
+circuit.cz(0, 2);    // Control: qubit 0, Target: qubit 2
+
+// SWAP gate
+circuit.swap(1, 2);  // Swap qubits 1 and 2
+```
+
+#### Three-Qubit Gates
+
+```rust
+// Toffoli (CCX) gate
+circuit.toffoli(0, 1, 2);  // Controls: qubits 0,1, Target: qubit 2
+```
+
+### Method Chaining
+
+The circuit methods support method chaining for convenient circuit construction:
+
+```rust
+let mut circuit = Circuit::new(3)
+    .with_name("Example Circuit");
+
+circuit.h(0)
+       .cnot(0, 1)
+       .x(2)
+       .cz(1, 2)
+       .ry(0, std::f64::consts::PI / 4.0);
+```
+
+## Circuit Execution
+
+### Execute on a State
+
+```rust
+// Create initial state
+let mut state = State::zero_state(3);
+
+// Execute circuit
+circuit.execute(&mut state);
+
+// The state is now modified according to the circuit operations
+```
+
+### Execute and Measure
+
+```rust
+// Execute circuit and measure all qubits
+let measurement_results = circuit.execute_and_measure();
+println!("Measurement results: {:?}", measurement_results);
+```
+
+### Execute with Noise
+
+```rust
+// Add noise model to circuit
+circuit.add_noise(some_noise_model);
+
+// Execute with noise applied
+let noisy_results = circuit.execute_and_measure_with_noise();
+```
+
+## Advanced Operations
+
+### Circuit Composition
+
+Combine multiple circuits together:
+
+```rust
+let mut circuit1 = Circuit::new(2);
+circuit1.h(0).cnot(0, 1);
+
+let mut circuit2 = Circuit::new(2);
+circuit2.x(0).z(1);
+
+// Compose circuits
+circuit1.compose(&circuit2);
+// circuit1 now contains operations from both circuits
+```
+
+### Circuit Reversal
+
+Create a reversed version of a circuit:
+
+```rust
+let original = Circuit::new(2);
+original.h(0).cnot(0, 1).x(1);
+
+let reversed = original.reversed();
+// Operations are applied in reverse order
+```
+
+### Expectation Values
+
+Calculate expectation values of observables:
+
+```rust
+use logosq::gates::z_gate;
+
+let observable = z_gate();
+let expectation = circuit.expectation(&observable);
+println!("Expectation value: {}", expectation);
+```
+
+## Custom Gates
+
+### Adding Matrix Gates
+
+You can add custom gates by providing their matrix representation:
+
+```rust
+use ndarray::Array2;
+use num_complex::Complex64;
+
+// Define a custom 2x2 matrix
+let custom_matrix = Array2::from_shape_vec(
+    (2, 2),
+    vec![
+        Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0),
+        Complex64::new(0.0, 0.0), Complex64::new(-1.0, 0.0),
+    ],
+).unwrap();
+
+// Add to circuit
+circuit.add_matrix_gate(custom_matrix, vec![0], "CustomGate");
+```
+
+### Single-Qubit Custom Gates
+
+```rust
+circuit.add_single_qubit_gate(custom_matrix, 0, "MyGate");
+```
+
+### Two-Qubit Custom Gates
+
+```rust
+// 4x4 matrix for two-qubit gate
+let two_qubit_matrix = Array2::zeros((4, 4));
+circuit.add_two_qubit_gate(two_qubit_matrix, 0, 1, "CustomTwoQubit");
+```
+
+## Common Quantum Circuit Patterns
+
+### Bell State Preparation
+
+```rust
+let mut bell_circuit = Circuit::new(2).with_name("Bell State");
+bell_circuit.h(0)
+           .cnot(0, 1);
+
+let mut state = State::zero_state(2);
+bell_circuit.execute(&mut state);
+// Now |state⟩ = (|00⟩ + |11⟩)/√2
+```
+
+### GHZ State Preparation
+
+```rust
+let mut ghz_circuit = Circuit::new(3).with_name("GHZ State");
+ghz_circuit.h(0)
+          .cnot(0, 1)
+          .cnot(0, 2);
+
+let mut state = State::zero_state(3);
+ghz_circuit.execute(&mut state);
+// Now |state⟩ = (|000⟩ + |111⟩)/√2
+```
+
+### Quantum Fourier Transform
+
+```rust
+use logosq::algorithms::qft;
+
+let qft_circuit = qft::create_circuit(4);  // 4-qubit QFT
+let mut state = State::plus_state(4);
+qft_circuit.execute(&mut state);
+```
+
+## Error Handling
+
+The circuit module includes several assertion checks:
+
+```rust
+// These will panic if conditions aren't met:
+circuit.x(5);  // Panics if circuit has < 6 qubits
+circuit.cnot(0, 0);  // Panics: control and target must be different
+
+// Always check qubit indices are valid
+assert!(qubit_index < circuit.num_qubits);
+```
+
+## Debugging and Visualization
+
+### Debug Output
+
+```rust
+println!("{:?}", circuit);
+// Output:
+// Circuit: Bell State (2 qubits)
+// 0: H(qubits: [0])
+// 1: CNOT(qubits: [0, 1])
+```
+
+### Circuit Information
+
+```rust
+println!("Circuit has {} qubits", circuit.num_qubits);
+println!("Circuit has {} operations", circuit.operations.len());
+
+if let Some(name) = &circuit.name {
+    println!("Circuit name: {}", name);
+}
+```
+
+## Performance Considerations
+
+1. **Gate Order**: The order of operations matters for quantum circuits
+2. **Memory Usage**: Large circuits with many qubits consume exponential memory
+3. **Noise Models**: Adding noise models increases execution time
+4. **Matrix Operations**: Custom matrix gates may be slower than built-in gates
+
+## Integration with Other Modules
+
+### States Module
+```rust
+use logosq::states::State;
+let mut state = State::zero_state(circuit.num_qubits);
+circuit.execute(&mut state);
+```
+
+### Gates Module
+```rust
+use logosq::gates::{x_gate, h_gate};
+// Built-in gates are automatically available through circuit methods
+```
+
+### Algorithms Module
+```rust
+use logosq::algorithms::qft;
+let algorithm_circuit = qft::create_circuit(4);
+circuit.compose(&algorithm_circuit);
+```
+
+## Example: Complete Quantum Algorithm
+
+```rust
+use logosq::prelude::*;
+
+fn quantum_teleportation_circuit() -> Circuit {
+    let mut circuit = Circuit::new(3).with_name("Quantum Teleportation");
+    
+    // Prepare Bell pair between qubits 1 and 2
+    circuit.h(1)
+           .cnot(1, 2);
+    
+    // Alice's operations (teleporting qubit 0)
+    circuit.cnot(0, 1)
+           .h(0);
+    
+    // Measurements would go here (not shown in circuit)
+    
+    // Bob's corrections (conditional on measurements)
+    // circuit.cnot(1, 2);  // If Alice measured 1 on qubit 1
+    // circuit.z(2);        // If Alice measured 1 on qubit 0
+    
+    circuit
+}
+
+fn main() {
+    let circuit = quantum_teleportation_circuit();
+    let results = circuit.execute_and_measure();
+    println!("Teleportation results: {:?}", results);
+}
+```
+
+This documentation provides comprehensive coverage of the Circuit module's functionality, from basic usage to advanced features, with practical examples throughout.
