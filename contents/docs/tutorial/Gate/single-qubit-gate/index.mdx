@@ -1,0 +1,20 @@
+---
+title: Single Qubit Gates
+description: This section provides an overview of single qubit gates in quantum computing.
+---
+# Single Qubit Gates
+
+In quantum computing, single qubit gates are fundamental operations that manipulate the state of a single qubit. These gates are represented by 2x2 unitary matrices and can perform various transformations on the qubit's state vector.
+
+## Common Single Qubit Gates
+Here are some of the most commonly used single qubit gates:
+
+| Gate | Symbol | Matrix Representation | Description |
+|------|--------|-----------------------|-------------|
+| Identity (I) | <InlineMath math="I" />| <InlineMath math="\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}" /> | Leaves the qubit state unchanged. |
+| Pauli-X (X) | <InlineMath math="X" /> | <InlineMath math="\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}" /> | Flips the state of the qubit (|0⟩ to |1⟩ and vice versa). |
+| Pauli-Y (Y) | <InlineMath math="Y" /> | <InlineMath math="\begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}" /> | Applies a bit and phase flip. |
+| Pauli-Z (Z) | <InlineMath math="Z" /> | <InlineMath math="\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}" /> | Applies a phase flip (|1⟩ gets a phase of -1). |
+| Hadamard (H) | <InlineMath math="H" /> | <InlineMath math="\frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}" /> | Creates superposition states. |
+| Phase (S) | <InlineMath math="S" /> | <InlineMath math="\begin{pmatrix} 1 & 0 \\ 0 & i \end{pmatrix}" /> | Applies a phase of \(i\) to the |1⟩ state. |
+| T Gate (T) | <InlineMath math="T" /> | <InlineMath math="\begin{pmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{pmatrix}" /> | Applies a phase of <InlineMath math="e^{i\pi/4}" /> to the |1⟩ state. |

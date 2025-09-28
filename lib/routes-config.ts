@@ -41,7 +41,14 @@ export const ROUTES: EachRoute[] = [
     noLink: true,
     items: [
       { title: "State", href: "/State" },
-      { title: "Gate", href: "/Gate" },
+      { title: "Gate", href: "/Gate" ,
+        items: [
+          { title: "Single Qubit Gates", href: "/single-qubit-gate" },
+          { title: "Two Qubit Gates", href: "/two-qubit-gate" },
+        ]
+      },
+      // { title: "Circuit", href: "/Circuit"
+      // },
       { title: "QFT", href: "/QFT" },
     ],
   },

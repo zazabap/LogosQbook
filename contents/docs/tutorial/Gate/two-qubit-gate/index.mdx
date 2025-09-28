@@ -1,0 +1,19 @@
+---
+title: Two Qubit Gates
+description: This section provides an overview of two qubit gates in quantum computing.
+---
+# Two Qubit Gates
+
+Two qubit gates are fundamental operations that act on a pair of qubits simultaneously. These gates are represented by 4×4 unitary matrices and are essential for creating entanglement between qubits, which is a key resource for quantum computing.
+
+## Common Two Qubit Gates
+Here are some of the most commonly used two qubit gates:
+
+| Gate | Symbol | Matrix Representation | Description |
+|------|--------|-----------------------|-------------|
+| CNOT (Controlled-NOT) | <InlineMath math="CNOT" /> | <InlineMath math="\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix}" /> | Flips the second qubit if the first qubit is |1⟩. |
+| CZ (Controlled-Z) | <InlineMath math="CZ" /> | <InlineMath math="\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & -1 \end{pmatrix}" /> | Applies a phase flip on the second qubit if the first qubit is |1⟩. |
+| SWAP | <InlineMath math="SWAP" /> | <InlineMath math="\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix}" /> | Exchanges the states of two qubits. |
+| iSWAP | <InlineMath math="iSWAP" /> | <InlineMath math="\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & i & 0 \\ 0 & i & 0 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix}" /> | Combines SWAP with a phase rotation. |
+| √SWAP | <InlineMath math="\sqrt{SWAP}" /> | <InlineMath math="\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & \frac{1+i}{2} & \frac{1-i}{2} & 0 \\ 0 & \frac{1-i}{2} & \frac{1+i}{2} & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix}" /> | Square root of the SWAP operation. |
+| Controlled-Phase | <InlineMath math="CR_{\phi}" /> | <InlineMath math="\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & e^{i\phi} \end{pmatrix}" /> | Applies a phase rotation of φ to the |11⟩ state. |

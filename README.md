@@ -1,13 +1,6 @@
-## AriaDocsLite - Documentation Template (Branch - `minimal-docs`)
+## LogosQ Documentation Template
 
-This branch has feature for document versioning
-
-This feature-packed documentation template, built with Next.js, offers a sleek and responsive design, perfect for all your project documentation needs.
-
-<img src="./public/public-og.png" />
-
-
-<br/>
+This is a documentation for LogosQ, which is a quantum computing simulation library with interesing tutorial to help student master the content of the physics and modern development of quantum computing. 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
