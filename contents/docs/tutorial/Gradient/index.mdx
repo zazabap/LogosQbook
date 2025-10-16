@@ -1,0 +1,113 @@
+---
+title: Gradient
+description: This section provides an overview of the Quantum Natural Gradient in the LogosQ Library.
+---
+
+# Quantum Natural Gradient (QNG)
+## Standard Gradient Descent
+
+The standard gradient descent update rule:
+
+<BlockMath math="\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}(\theta_t)" />
+
+where:
+- <InlineMath math="\mathcal{L}(\theta)" /> is the cost function
+- <InlineMath math="\theta" /> are the parameters
+- <InlineMath math="\eta" /> is the learning rate (step size)
+- <InlineMath math="\nabla_\theta" /> denotes the gradient with respect to <InlineMath math="\theta" />
+
+## Natural Gradient Descent (Classical)
+
+The natural gradient descent modification:
+
+<BlockMath math="\theta_{t+1} = \theta_t - \eta F^{-1} \nabla_\theta \mathcal{L}(\theta_t)" />
+
+where:
+- <InlineMath math="F" /> is the Fisher information matrix
+- <InlineMath math="F^{-1}" /> is the inverse of the Fisher information matrix
+
+## Quantum Natural Gradient
+
+The quantum analog using the Fubini-Study metric tensor:
+
+<BlockMath math="\theta_{t+1} = \theta_t - \eta g^{+} \nabla_\theta \mathcal{L}(\theta_t)" />
+
+where:
+- <InlineMath math="g_{ij}" /> is the Fubini-Study metric tensor
+- <InlineMath math="g^{+}" /> is the pseudo-inverse of the metric tensor
+
+## Variational Quantum Circuit Structure
+
+A variational quantum circuit is represented as:
+
+<BlockMath math="|\psi(\theta)\rangle = W_L V_L(\theta_L) W_{L-1} \cdots V_1(\theta_1) W_0 |\psi_0\rangle" />
+
+where:
+- <InlineMath math="|\psi_0\rangle" /> is the initial state
+- <InlineMath math="W_\ell" /> are layers of non-parametrized quantum gates
+- <InlineMath math="V_\ell(\theta_\ell)" /> are layers of parametrized quantum gates
+- <InlineMath math="\theta_\ell = \{\theta^{(\ell)}_0, \dots, \theta^{(\ell)}_n\}" /> are parameters for layer <InlineMath math="\ell" />
+
+## Parametrized Gate Form
+
+Parametrized gates are written as:
+
+<BlockMath math="X(\theta^{(\ell)}_{i}) = e^{i\theta^{(\ell)}_{i} K^{(\ell)}_i}" />
+
+where:
+- <InlineMath math="K^{(\ell)}_i" /> is the generator of the parametrized operation
+
+## Block-Diagonal Fubini-Study Metric Tensor
+
+For each parametric layer <InlineMath math="\ell" />, the <InlineMath math="n_\ell \times n_\ell" /> block-diagonal submatrix is:
+
+<BlockMath math="g_{ij}^{(\ell)} = \frac{1}{4}\text{Re}\left[\langle \psi_{\ell-1} | K_i K_j | \psi_{\ell-1}\rangle - \langle \psi_{\ell-1} | K_i | \psi_{\ell-1}\rangle \langle \psi_{\ell-1} | K_j | \psi_{\ell-1}\rangle\right]" />
+
+where:
+- <InlineMath math="|\psi_{\ell-1}\rangle = W_{\ell-1} V_{\ell-1}(\theta_{\ell-1}) \cdots V_1(\theta_1) W_0 |\psi_0\rangle" />
+- <InlineMath math="K_i \equiv K_i^{(\ell)}" /> (for brevity)
+
+## Diagonal Terms of Metric Tensor
+
+The diagonal elements are given by variance:
+
+<BlockMath math="g_{ii}^{(\ell)} = \frac{1}{4}\text{Var}(K_i) = \frac{1}{4}\left(\langle K_i^2 \rangle - \langle K_i \rangle^2\right)" />
+
+## Off-Diagonal Terms of Metric Tensor
+
+The off-diagonal elements are given by covariance:
+
+<BlockMath math="g_{ij}^{(\ell)} = \frac{1}{4}\text{Cov}(K_i, K_j) = \frac{1}{4}\left(\langle K_i K_j \rangle - \langle K_i \rangle \langle K_j \rangle\right)" />
+
+where <InlineMath math="i \neq j" />.
+
+## Complete Block-Diagonal Metric Tensor
+
+The full block-diagonal approximation combines all layer submatrices:
+
+<BlockMath math="g = \begin{pmatrix}
+g^{(0)} & 0 & \cdots & 0 \\
+0 & g^{(1)} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & g^{(L)}
+\end{pmatrix}" />
+
+## Computational Complexity
+
+For a variational circuit with:
+- <InlineMath math="d" /> parameters
+- <InlineMath math="L" /> parametrized layers
+
+Total quantum evaluations per optimization step:
+- Standard gradient descent: <InlineMath math="2d" /> evaluations
+- Quantum natural gradient: <InlineMath math="2d + L" /> evaluations
+
+## Key Properties
+
+1. **Fubini-Study reduces to Fisher information:** In the classical limit, the Fubini-Study metric tensor reduces to the Fisher information matrix
+
+2. **Imaginary-time evolution:** In the limit <InlineMath math="\eta \rightarrow 0" />, QNG dynamics are equivalent to imaginary-time evolution within the variational subspace
+
+3. **Symmetry:** The block-diagonal matrices are real and symmetric: <InlineMath math="g_{ij}^{(\ell)} = g_{ji}^{(\ell)}" />
+
+4. **Parametrization invariance:** The natural gradient is invariant with respect to parametrization, providing optimal step sizes automatically

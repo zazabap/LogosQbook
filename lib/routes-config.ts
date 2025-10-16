@@ -42,6 +42,7 @@ export const ROUTES: EachRoute[] = [
       // { title: "Circuit", href: "/Circuit"
       // },
       { title: "QFT", href: "/QFT" },
+      { title: "Gradient", href: "/Gradient" },
     ],
   },
 ]
